@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\BidController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\UserBidController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -42,11 +44,14 @@ Route::namespace('Item')->group(function() {
 });
 
 Route::namespace('Bid')->group(function() {
+    Route::get('/payments', [AdminPaymentController::class, 'index'])->name('payment.show');
     Route::get('/bids', [BidController::class, 'index'])->name('bid.index');
 });
 
 Route::group(['namespace' => 'UserBid', 'middleware' => 'auth'], function() {
     // Route::get('/useritem', [UserBidController::class, 'index'])->name('item.bid');
+    Route::post('/payment/{item_id}', [PaymentController::class, 'store'])->name('payment.store');
+    Route::patch('/payment/{id}', [AdminPaymentController::class, 'update'])->name('payment.update');
     Route::get('/bid/{item}', [UserBidController::class, 'show'])->name('bid.show');
     Route::post('/bid', [UserBidController::class, 'store'])->name('bid.store');
 });

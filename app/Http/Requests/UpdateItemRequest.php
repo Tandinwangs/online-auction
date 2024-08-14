@@ -29,7 +29,7 @@ class UpdateItemRequest extends FormRequest
             'reserve_price' => 'sometimes|required|numeric|min:0',
             'category_id' => 'sometimes|required|exists:categories,id',
             'user_id' => 'sometimes|required|exists:users,id',
-            'auction_start' => 'sometimes|required|date|after_or_equal:today',
+            'auction_start' => 'sometimes|required|date',
             'auction_end' => 'sometimes|required|date|after:auction_start',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ];

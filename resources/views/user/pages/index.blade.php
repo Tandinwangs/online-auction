@@ -65,20 +65,21 @@
 					<div class="col-sm-6 col-md-3 col-product">
 						<figure>
 							<img class="rounded-corners img-fluid" src="{{ asset($item->image_path) }}" width="240" height="240">
-							<figcaption>
+							<!-- <figcaption>
 								<div class="thumb-overlay">
 									<a href="{{ route ('bid.show', $item->id) }}" title="More Info">
 										<i class="fas fa-search-plus"></i>
 									</a>
 								</div>
-							</figcaption>
+							</figcaption> -->
 						</figure>
-						<h4><a href="{{ route ('bid.show', $item->id) }}">{{ $item->name }}</a></h4>
+						<h4>{{ $item->name }}</h4>
 						<p><span class="emphasis">Nu.{{ $item->starting_bid }}</span></p>
 						<div class="auction-timer">
 							<p>Auction ends in:</p>
 							<div class="countdown" data-end-time="{{ $item->auction_end }}"></div>
 						</div>
+						<a type="button" class="btn btn-primary btn-sm" href="{{ route ('bid.show', $item->id) }}">Bid Now</a>
 					</div>
 				@endforeach
 				</div>

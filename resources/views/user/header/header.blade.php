@@ -21,16 +21,7 @@
 					<div class="collapse navbar-collapse pull-xs-right justify-content-end" id="navbar-1">
 						<ul class="navbar-nav mt-2 mt-md-0">
 							<li class="nav-item active"><a class="nav-link" href="{{ route ('userhome') }}">Home <span class="sr-only">(current)</span></a></li>
-					
-							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories </a>
-								<div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="index.html">Homepage</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="catalog.html">Land</a>
-									<a class="dropdown-item" href="item.html">Machineries</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="contact.html">Vehicles</a></div>
-							</li>
-							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+							<li class="nav-item"><a class="nav-link" href="">Contact</a></li>
 							
                             @if(Auth::user())
 							<!-- @if(Auth::user()->hasRole('admin'))

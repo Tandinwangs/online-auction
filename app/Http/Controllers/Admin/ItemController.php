@@ -50,6 +50,7 @@ class ItemController extends Controller
         $path = 'uploads/item/';
         $file->move($path, $filename);
         $validated['image_path'] = $path.$filename;
+        $validated['current_bid'] = $request->starting_bid;
         // $validated['image_path'] = $request->file('image')->store('images', 'public');
     }
 

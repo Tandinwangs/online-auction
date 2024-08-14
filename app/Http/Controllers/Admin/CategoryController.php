@@ -63,7 +63,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->update($request->validated());
-        return redirect()->back()->with('warning', "Category Updated successfully");
+        return redirect()->back()->with('success', "Category Updated successfully");
     }
 
     /**

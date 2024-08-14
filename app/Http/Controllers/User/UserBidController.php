@@ -7,7 +7,8 @@ use app\Http\Controllers\Controller;
 use App\Http\Requests\StoreBidItemRequest;
 use App\Models\Bid;
 use App\Models\Item;
-
+use App\Models\Payment;
+use Illuminate\Support\Facades\Auth;
 
 class UserBidController extends Controller
 {
@@ -32,7 +33,18 @@ class UserBidController extends Controller
      */
     public function store(StoreBidItemRequest $request)
     {
+        $user = Auth::user();
         $item = Item::findOrFail($request->item_id);
+
+        $payment = Payment::where('user_id', $user->id )
+                            ->where('item_id', $item->id)
+                            ->first();
+        
+        if(!$payment){
+            return redirect()->back()->withErrors(['payment' => 'You must pay Nu. 26,000 to bid on this item.']);
+        }else if($payment->status != 'approved'){
+            return redirect()->back()->with(['error' => 'Your payment is not yet approved. Please wait for approval before bidding.']);
+        }
 
         $minBid = $item->current_bid + $item->reserve_price;
 
@@ -55,7 +67,10 @@ class UserBidController extends Controller
      */
     public function show(Item $item)
     {
-        return view('user.pages.item', compact('item'));
+        $user = Auth::user();
+        $hasPaid = Payment::where('user_id', $user->id)->where('item_id', $item->id)->where('status', 'approved')->exists();
+        $relatedItems = Item::where('category_id', $item->category_id)->get();
+        return view('user.pages.item', compact('item', 'hasPaid', 'relatedItems'));
     }
 
     /**
