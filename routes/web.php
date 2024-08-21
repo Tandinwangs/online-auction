@@ -19,13 +19,7 @@ use Spatie\Permission\Contracts\Role;
 
 Route::get('/', [UserController::class, 'index'])->name('userhome');
 
-Route::get('/dashboard', function () {
-    if(checkAdminAccess()) {
-        $totalRevenue = Bid::where('status', 'wins in Bidding')->sum('amount');
-        return view('admin.pages.dashboard', compact('totalRevenue'));
-    }
-    return redirect("/");
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [AdminController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('dashboard');
 Route::middleware('auth')->group(function () {
@@ -50,6 +44,7 @@ Route::group(['namespace' => 'Item', 'middleware' => 'auth'],function() {
     Route::post('/auctionReference', [AuctionReferenceController::class, 'store'])->name('auctionReference.store');
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::post('/user/{user}', [AdminUserController::class, 'destroy'])->name('user.delete');
+    Route::get('/admin/recent-activities', [AdminController::class, 'getRecentActivities']);
 });
 
 Route::namespace('Bid')->group(function() {

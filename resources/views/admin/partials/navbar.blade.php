@@ -244,7 +244,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('users.index') }}">
+        <a class="nav-link {{ Request::routeIs('users.index') ? '': 'collapsed'}} "" href="{{ route ('users.index') }}">
           <i class="bi bi-person"></i>
           <span>Users</span>
         </a>
