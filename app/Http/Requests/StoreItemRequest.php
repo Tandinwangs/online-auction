@@ -28,6 +28,7 @@ class StoreItemRequest extends FormRequest
             'current_bid' => 'nullable|numeric|min:0',
             'reserve_price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
+            'auction_reference_id' => 'required|exists:auction_references,id',
             'user_id' => 'required|exists:users,id',
             'auction_start' => 'required|date|after_or_equal:today',
             'auction_end' => 'required|date|after:auction_start',

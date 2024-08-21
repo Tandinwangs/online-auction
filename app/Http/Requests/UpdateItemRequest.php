@@ -28,6 +28,7 @@ class UpdateItemRequest extends FormRequest
             'current_bid' => 'nullable|numeric|min:0',
             'reserve_price' => 'sometimes|required|numeric|min:0',
             'category_id' => 'sometimes|required|exists:categories,id',
+            'auction_reference_id' => 'required|exists:auction_references,id',
             'user_id' => 'sometimes|required|exists:users,id',
             'auction_start' => 'sometimes|required|date',
             'auction_end' => 'sometimes|required|date|after:auction_start',

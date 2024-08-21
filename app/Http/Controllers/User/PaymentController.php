@@ -40,11 +40,12 @@ class PaymentController extends Controller
 
      // Check if the user has already paid for this item
      $existingPayment = Payment::where('user_id', $user->id)
-     ->where('item_id', $item->id)
+     ->where('auction_reference_id', $item->auction_reference_id)
+     ->where('status', 'approved')
      ->first();
 
         if ($existingPayment) {
-        return redirect()->back()->withErrors('You have already paid for this item.');
+        return redirect()->back()->with('error', 'You have already paid for this item.');
         }
 
         // Handle file upload
@@ -60,8 +61,8 @@ class PaymentController extends Controller
         // Create a new payment record
         Payment::create([
         'user_id' => $user->id,
-        'item_id' => $item->id,
         'screenshot' => $screenshotPath,
+        'auction_reference_id' => $item->auction_reference_id,
         'status' => 'pending', 
         ]);
 

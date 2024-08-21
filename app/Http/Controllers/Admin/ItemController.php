@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use App\Models\AuctionReference;
 use App\Models\Category;
 use App\Models\Item;
 
@@ -30,7 +31,8 @@ class ItemController extends Controller
     {
         if(checkAdminAccess()) {
             $categories = Category::all();
-            return view('admin.pages.item.addItem', compact('categories'));
+            $auctionRefDates = AuctionReference::all();
+            return view('admin.pages.item.addItem', compact('categories', 'auctionRefDates'));
         }
         return redirect("/");
     }
@@ -73,7 +75,8 @@ class ItemController extends Controller
     public function edit(Item $item)
     {
         $categories = Category::all();
-        return view('admin.pages.item.addItem', compact('item', 'categories'));
+        $auctionRefDates = AuctionReference::all();
+        return view('admin.pages.item.addItem', compact('item', 'categories', 'auctionRefDates'));
     }
 
     /**

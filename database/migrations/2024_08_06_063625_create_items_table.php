@@ -21,6 +21,8 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('auction_reference_id');
+            $table->foreign('auction_reference_id')->references('id')->on('auction_references')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('auction_start')->nullable();
             $table->timestamp('auction_end')->nullable();

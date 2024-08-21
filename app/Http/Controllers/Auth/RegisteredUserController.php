@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dzongkhag;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +20,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $dzongkhags = Dzongkhag::all();
+        return view('auth.register', compact('dzongkhags'));
     }
 
     /**
@@ -32,7 +34,11 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'cid' => ['required', 'string', 'max: 11', 'unique:'.User::class],
+            'cid' => ['required', 'string', 'max: 11', 'unique:'.User::class, 'regex:/^[1-3]/'],
+            'phone_number' => 'required|string|max:8', 
+            'dzongcode' => 'required|exists:dzongkhags,dzongcode',
+            'gewocode' => 'required|exists:gewogs,gewogcode',
+            'villcode' => 'required|exists:villages,villcode',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -40,6 +46,10 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'cid' => $request->cid,
+            'phone_number' => $request->phone_number,
+            'dzongcode' => $request->dzongcode,
+            'gewocode' => $request->gewocode,
+            'villcode' => $request->villcode,
             'password' => Hash::make($request->password),
         ]);
         $user->assignRole('user');

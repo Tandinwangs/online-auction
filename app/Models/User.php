@@ -22,6 +22,10 @@ class User extends Authenticatable
         'email',
         'cid',
         'password',
+        'phone_number',
+        'dzongcode',
+        'gewocode',
+        'villcode'
     ];
 
     /**
@@ -52,4 +56,15 @@ class User extends Authenticatable
         return $this->hasMany(Payment::class);
     }
 
+    public function dzongkhag() {
+        return $this->belongsTo(Dzongkhag::class, 'dzongcode', 'dzongcode');
+    }
+
+    public function gewog() {
+        return $this->belongsTo(Gewog::class, 'gewocode', 'gewogcode');
+    }
+
+    public function village() {
+        return $this->belongsTo(Village::class, 'villcode', 'villcode');
+    }
 }

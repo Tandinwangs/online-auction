@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('item_id');
-            $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
+            $table->unsignedBigInteger('auction_reference_id');
+            $table->foreign('auction_reference_id')->references('id')->on('auction_references')->onDelete('cascade');
             $table->string('screenshot')->nullable();
             $table->string('status')->default('pending'); 
             $table->string('reason')->nullable();

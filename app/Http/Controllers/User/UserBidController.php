@@ -68,9 +68,18 @@ class UserBidController extends Controller
     public function show(Item $item)
     {
         $user = Auth::user();
-        $hasPaid = Payment::where('user_id', $user->id)->where('item_id', $item->id)->where('status', 'approved')->exists();
-        $relatedItems = Item::where('category_id', $item->category_id)->get();
-        return view('user.pages.item', compact('item', 'hasPaid', 'relatedItems'));
+        $hasPaid = Payment::where('user_id', $user->id)
+                    ->where('auction_reference_id', $item->auction_reference_id)        
+                    ->where('status', 'approved')->exists();
+
+        $relatedItems = Item::where('category_id', $item->category_id)
+                            ->where('id', '!=', $item->id)
+                            ->where('auction_reference_id', $item->auction_reference_id)->get();
+                            
+        $highestBid = Bid::where('item_id', $item->id)->orderBy('amount', 'desc')->first();
+        $myBid = Bid::where('item_id', $item->id)
+                        ->where('user_id', $user->id)->orderBy('amount', 'desc')->first();
+        return view('user.pages.item', compact('item', 'hasPaid', 'relatedItems', 'highestBid', 'myBid'));
     }
 
     /**

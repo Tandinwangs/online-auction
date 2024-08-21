@@ -11,7 +11,7 @@ class Payment extends Model
 
     protected $fillable = [
         'user_id',
-        'item_id',
+        'auction_reference_id',
         'status',
         'screenshot'
     ];
@@ -20,7 +20,10 @@ class Payment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function item() {
-        return $this->belongsTo(Item::class);
+    public function auctionReference()
+    {
+        return $this->belongsTo(AuctionReference::class);
     }
+    
+
 }

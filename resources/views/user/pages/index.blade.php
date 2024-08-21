@@ -19,11 +19,11 @@
 			<div class="carousel-inner">
 			
 				<!--Text only with background image-->
-				<div class="carousel-item active" style="background: url(images/bnb1.jpg) center;">
+				<div class="carousel-item active" style="background: url('{{ asset('assets/user/images/hero-banner1.png') }}') center;">
 					<div class="container slide-textonly">
 						<div>
-							<h1>BNB Auction</h1>
-							<p class="lead">Browse our Auction Items</p>
+							<!-- <h1>BNB Auction</h1>
+							<p class="lead">Browse our Auction Items</p> -->
 							<!-- <a href="#" class="btn btn-outline-secondary">View Collection</a> -->
 						</div>
 					</div>
@@ -38,7 +38,7 @@
 					 		<!-- <a href="#" class="btn btn-outline-secondary">View Collection</a> -->
 					 	</div>
 						<div class="slide-image">
-							<img src="{{ asset('assets/user/images/bnb3.jpg') }}" style="width: 80%;">
+							<img src="{{ asset('assets/user/images/hero-banner2.jpg') }}" style="width: 80%;">
 						</div>
 					</div>
 				</div>
@@ -64,7 +64,7 @@
 				@foreach ($items as $item)	
 					<div class="col-sm-6 col-md-3 col-product">
 						<figure>
-							<img class="rounded-corners img-fluid" src="{{ asset($item->image_path) }}" width="240" height="240">
+							<img class="rounded-corners img-fluid" src="{{ asset($item->image_path) }}" style="width: 240px; height: 180px">
 							<!-- <figcaption>
 								<div class="thumb-overlay">
 									<a href="{{ route ('bid.show', $item->id) }}" title="More Info">
@@ -74,12 +74,20 @@
 							</figcaption> -->
 						</figure>
 						<h4>{{ $item->name }}</h4>
-						<p><span class="emphasis">Nu.{{ $item->starting_bid }}</span></p>
+						<p><span class="emphasis">Nu.{{ number_format($item->current_bid) }}</span></p>
 						<div class="auction-timer">
 							<p>Auction ends in:</p>
 							<div class="countdown" data-end-time="{{ $item->auction_end }}"></div>
 						</div>
-						<a type="button" class="btn btn-primary btn-sm" href="{{ route ('bid.show', $item->id) }}">Bid Now</a>
+						@php
+							$auctionExpired = \Carbon\Carbon::now()->greaterThan($item->auction_end);
+						@endphp
+						<a type="button" 
+						class="btn btn-primary btn-sm {{ $auctionExpired ? 'disabled' : '' }}" 
+						href="{{ $auctionExpired ? '#' : route('bid.show', $item->id) }}" 
+						{{ $auctionExpired ? 'aria-disabled="true"' : '' }}>
+						Bid Now
+						</a>
 					</div>
 				@endforeach
 				</div>
@@ -138,12 +146,12 @@
 					// If the count down is over, write some text
 					if (distance < 0) {
 						clearInterval(x);
-						countdownElement.innerHTML = "EXPIRED";
+						countdownElement.innerHTML = "Auction Ended";
 					}
 				}, 1000);
 			});
 		});
-		</script>
+	</script>
 		
 		
 </html>

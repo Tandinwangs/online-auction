@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Playfair+Display:400,400i,700");
 body {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   background-color: #ffffff;
   color: #252D60;
@@ -18,29 +18,29 @@ a:hover {
   color: #F40000; }
 
 h1 {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 3rem;
   font-weight: 400; }
 
 h2 {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 2.8rem;
   font-weight: 300; }
 
 h3 {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 2rem;
   font-weight: 300; }
 
 h4 {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 1rem;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.05rem; }
 
 h5 {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 1rem;
   font-weight: 400;
   text-transform: uppercase;
@@ -71,8 +71,7 @@ p {
   margin: 1rem auto; }
 
 .emphasis {
-  font-family: Georgia, Times, 'Times New Roman';
-  font-style: italic;
+  font-family: 'Poppins', sans-serif;
   color: #252D60; }
 
 .constrain-width {
@@ -80,7 +79,8 @@ p {
   margin: 0 auto; }
 
 .rounded-corners {
-  border-radius: .3rem; }
+  border-radius: .3rem
+ }
 
 .pill-btn {
   border-radius: 499rem !important; }
@@ -97,7 +97,7 @@ p {
   background: #f7f7f8; }
 
 .primary-color {
-  color: #F40000 !important; }
+  color: #252D60 !important; }
 
 .secondary-color {
   color: #252D60 !important; }
@@ -233,7 +233,7 @@ input {
   background: transparent; }
 
 a.navbar-brand, a.logo {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: #444342 !important;
   font-size: 2rem;
   font-weight: bold;

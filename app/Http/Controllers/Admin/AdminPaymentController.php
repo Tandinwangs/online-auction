@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use app\Http\Controllers\Controller;
+use App\Mail\PaymentStatusUpdateMail;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Mail;
 
 class AdminPaymentController extends Controller
 {
@@ -69,6 +71,9 @@ class AdminPaymentController extends Controller
         $payment->status = $request->input('status');
         $payment->reason = $request->input('reason');
         $payment->save();
+
+        $user = $payment->user;
+        Mail::to($user->email)->send(new PaymentStatusUpdateMail($user, $payment));
 
         return redirect()->back()->with('success', 'Payment status updated successfully.');
     }

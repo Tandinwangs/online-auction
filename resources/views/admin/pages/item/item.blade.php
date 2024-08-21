@@ -27,8 +27,37 @@
                Add New Item
             </a>
 
-        </div>
-     
+            <a type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal">
+               Add reference Date
+            </a>
+          </div>
+
+          <div class="modal fade" id="basicModal" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Add Reference Date</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3" method="POST" action="{{ route ('auctionReference.store') }}">
+                            @csrf
+                            <div class="col-12">
+                              <label for="auction_reference_date" class="form-label">Date</label>
+                              <input type="date" class="form-control" id="auction_reference_date" name="auction_reference_date">
+                            </div>
+                            <div class="text-center">
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </form>
+            
+                    </div>
+                  
+                  </div>
+                </div>
+              </div>
+
 
           <!-- Table with stripped rows -->
           <table class="table datatable">
@@ -81,8 +110,13 @@
                                                     <input type="text" class="form-control" id="name" name="name" value="{{ $item->reserve_price }}">
                                                 </div>
                                                 <div class="col-6">
-                                           <img class="item-img" src="{{asset ($item->image_path) }}" alt="{{ $item->name }}">
+                                                    <label for="name" class="form-label">Reference Date</label>
+                                                    <input type="text" class="form-control" id="name" name="name" value="{{ $item->auctionReference->auction_reference_date }}">
                                                 </div>
+                                                <div class="col-6">
+                                                    <img class="item-img" src="{{asset ($item->image_path) }}" alt="{{ $item->name }}">
+                                                </div>
+
                                                 <div class="col-12">
                                                     <label for="floatingTextarea">Description</label>
                                                     <textarea class="form-control" id="floatingTextarea" style="height: 100px;" name="description">{{ $item->description }}</textarea>
@@ -99,10 +133,10 @@
                     </td>
                     <td>
                         <a type="button" class="btn btn-primary btn-sm" href="{{route ('item.edit', $item->id)}}">
-                            Edit
+                        <i class="bi bi-pen"></i>
                         </a>
                         <a type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteItem{{ $item->id }}">
-                            Delete
+                        <i class="bi bi-trash"></i>
                         </a>
                         <div class="modal fade" id="deleteItem{{ $item->id }}" tabindex="-1">
                                 <div class="modal-dialog">

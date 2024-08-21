@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\AuctionStatusUpdateMail;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Models\Item;
+use Illuminate\Support\Facades\Mail;
 
 class UpdateBidStatuses extends Command
 {
@@ -34,14 +36,19 @@ class UpdateBidStatuses extends Command
         $items = Item::where('auction_end', '<', Carbon::now())->get();
 
         foreach ($items as $item){
-            $highestBid = $item->bids()->orderBy('amount', 'desc')->first();
+            $highestBid = $item->bids()->where('status', 'bidding stage')->orderBy('amount', 'desc')->first();
 
             if ($highestBid) {
-                $highestBid->update(['status' => 'wins']);
+                $highestBid->update(['status' => 'wins in Bidding']);
+                $user = $highestBid->user;
+                $item = $highestBid->item;
+                Mail::to($user->email)->send(new AuctionStatusUpdateMail($user, $item));
 
-                $item->bids()->where('id', '!=' , $highestBid->id)->update(['status' => 'loss']);
+                $item->bids()->where('id', '!=' , $highestBid->id)->update(['status' => 'loose in Bidding']);
             }
         }
+
+        $this->info('UpdateBidStatus completed success');
 
     }   
 }

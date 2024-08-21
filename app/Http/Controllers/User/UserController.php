@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\AuctionReference;
 use App\Models\Item;
 
 class UserController extends Controller
@@ -11,10 +12,21 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($auction_reference_date = null)
     {
-        $items = Item::all();
-        return view('user.pages.index', compact('items')); 
+        if ($auction_reference_date) {
+            // Fetch items based on the auction_reference_date
+            $items = Item::whereHas('auctionReference', function ($query) use ($auction_reference_date) {
+                $query->where('auction_reference_date', $auction_reference_date);
+            })->get();
+        } else {
+            // If no reference date is provided, you can fetch all items or return a default view
+            $items = Item::all();
+        }
+        
+        // Fetch recent references for the dropdown
+        $recentReferences = AuctionReference::latest('created_at')->take(5)->get();
+        return view('user.pages.index', compact('items', 'recentReferences', 'auction_reference_date')); 
     }
 
     /**

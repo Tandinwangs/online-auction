@@ -42,16 +42,16 @@
                     <tr>
                         <td>{{ $bid->id }}</td>
                         <td>{{ $bid->item->name }}</td>
-                        <td>{{ $bid->amount }}</td>
+                        <td>{{ number_format($bid->amount) }}</td>
                         <td>{{ $bid->bid_time }}</td>
                         <td><span class="badge @if($bid->status == 'bidding stage') bg-warning
-                            @elseif($bid->status == 'won') bg-success 
-                            @elseif($bid->status == 'lost') bg-danger 
+                            @elseif($bid->status == 'wins in Bidding') bg-success 
+                            @elseif($bid->status == 'loose in Bidding') bg-danger 
                             @elseif($bid->status == 'closed') bg-secondary 
                             @else bg-info @endif">{{$bid->status}}</span></td>
                         <td>
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal">
-                            user details
+                            <i class="bi bi-eye"></i>
                             </button>
                             <div class="modal fade" id="basicModal" tabindex="-1">
                                 <div class="modal-dialog">

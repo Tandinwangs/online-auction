@@ -55,6 +55,21 @@
                 @enderror
             </div>
 
+            
+            <div class="col-md-6">
+                <select id="inputState" class="form-select" name="auction_reference_id">
+                    <option value="">Choose...</option>
+                    @foreach ($auctionRefDates as $auctionRefDate)
+                        <option value="{{ $auctionRefDate->id }}" {{ isset($item) && $item->auction_reference_id == $auctionRefDate->id ? 'selected' : '' }}>
+                          {{ \Carbon\Carbon::parse($auctionRefDate->auction_reference_date)->format('jS F, Y') }} 
+                        </option>
+                    @endforeach
+                </select>
+                @error('auction_reference_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
             <div class="col-md-6">
               <input type="text" class="form-control" name="starting_bid" placeholder="Starting Bid" value="{{ $item->starting_bid ?? '' }}" >
               @error('starting_bid')
@@ -75,6 +90,22 @@
             </div>
 
             <div class="col-6">
+            <label>Auction Start</label>
+              <input type="date" class="form-control" name="auction_start" value="{{ old('auction_start', isset($item) ? $item->auction_start : '') }}" placeholder="Auction Start">
+              @error('auction_start')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="col-6">
+            <label>Auction End</label>
+              <input type="date" class="form-control" name="auction_end" placeholder="Auction end" value="{{ old('auction_end', isset($item) ? $item->auction_end : '') }}">
+              @error('auction_end')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+            
+            <div class="col-6">
                 <input type="file" class="form-control" name="image">
                 @if(isset($item) && $item->image_path)
             <img src="{{ asset($item->image_path) }}" alt="{{ $item->name }}" width="100">
@@ -84,23 +115,7 @@
                 @enderror
               </div>
        
-            <div class="col-6">
-            <label>Auction Start</label>
-              <input type="datetime-local" class="form-control" name="auction_start" value="{{ old('auction_start', isset($item) ? $item->auction_start : '') }}" placeholder="Auction Start">
-              @error('auction_start')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
-            </div>
 
-            <div class="col-6">
-            <label>Auction End</label>
-              <input type="datetime-local" class="form-control" name="auction_end" placeholder="Auction end" value="{{ old('auction_end', isset($item) ? $item->auction_end : '') }}">
-              @error('auction_end')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
-            </div>
-
-            
             <div class="col-md-6">
                 <textarea placeholder="Desc" class="form-control" id="floatingTextarea" style="height: 100px;" name="description">{{ old('description', $item->description ?? '') }}</textarea>
                 @error('description')

@@ -16,6 +16,7 @@ class Item extends Model
         'current_bid',
         'reserve_price',
         'category_id',
+        'auction_reference_id',
         'user_id',
         'auction_start',
         'auction_end',
@@ -35,6 +36,11 @@ class Item extends Model
     public function bids()
     {
         return $this->hasMany(Bid::class);
+    }
+
+    public function auctionReference()
+    {
+        return $this->belongsTo(AuctionReference::class);
     }
     
 }

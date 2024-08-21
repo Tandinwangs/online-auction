@@ -10,7 +10,7 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="{{ asset('assets/admin/img/favicon.png') }}" rel="icon">
+  <link href="{{ asset('assets/admin/img/icon.png') }}" rel="icon">
   <link href="{{ asset('assets/admin/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
@@ -228,7 +228,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="{{ route ('dashboard') }}">
+        <a class="nav-link {{ Request::routeIs('dashboard') ? '': 'collapsed'}} " href="{{ route ('dashboard') }}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -237,28 +237,28 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route ('payment.show') }}">
+        <a class="nav-link {{ Request::routeIs('payment.show') ? '': 'collapsed'}} "" href="{{ route ('payment.show') }}">
           <i class="bi bi-card-list"></i>
           <span>Payment</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="{{ route('users.index') }}">
           <i class="bi bi-person"></i>
-          <span>Profile</span>
+          <span>Users</span>
         </a>
       </li>
       
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route ('category.index') }}">
+        <a class="nav-link {{ Request::routeIs('category.index') ? '': 'collapsed'}} "" href="{{ route ('category.index') }}">
           <i class="bi bi-card-list"></i>
           <span>Category</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route ('item.index') }}">
+        <a class="nav-link {{ Request::routeIs('item.index') ? '': 'collapsed'}} "" href="{{ route ('item.index') }}">
           <i class="bi bi-cart-check"></i>
           <span>Items</span>
         </a>
@@ -266,7 +266,7 @@
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route ('bid.index') }}">
+        <a class="nav-link {{ Request::routeIs('bid.index') ? '': 'collapsed'}} "" href="{{ route ('bid.index') }}">
           <i class="bi bi-hammer"></i>
           <span>Bids</span>
         </a>
