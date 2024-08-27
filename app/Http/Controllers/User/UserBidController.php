@@ -37,7 +37,6 @@ class UserBidController extends Controller
         $item = Item::findOrFail($request->item_id);
 
         $payment = Payment::where('user_id', $user->id )
-                            ->where('item_id', $item->id)
                             ->first();
         
         if(!$payment){

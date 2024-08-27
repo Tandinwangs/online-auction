@@ -45,11 +45,15 @@ Route::group(['namespace' => 'Item', 'middleware' => 'auth'],function() {
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::post('/user/{user}', [AdminUserController::class, 'destroy'])->name('user.delete');
     Route::get('/admin/recent-activities', [AdminController::class, 'getRecentActivities']);
+    Route::get('/item/report', [AdminController::class, 'generateItemReport'])->name('item.report');
+    Route::get('/item/report/generate-bulk', [AdminController::class, 'generateBulkItemReports'])->name('item.bulk.report');
+
 });
 
 Route::namespace('Bid')->group(function() {
     Route::get('/payments', [AdminPaymentController::class, 'index'])->name('payment.show');
     Route::get('/bids', [BidController::class, 'index'])->name('bid.index');
+    Route::get('/items/{refDate}', [BidController::class, 'getItemsByrefDate'])->name('items.getItemsByrefDate');
 });
 
 Route::group(['namespace' => 'UserBid', 'middleware' => 'auth'], function() {

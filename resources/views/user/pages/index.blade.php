@@ -38,7 +38,7 @@
 					 		<!-- <a href="#" class="btn btn-outline-secondary">View Collection</a> -->
 					 	</div>
 						<div class="slide-image">
-							<img src="{{ asset('assets/user/images/hero-banner2.jpg') }}" style="width: 80%;">
+							<img src="{{ asset('assets/user/images/hero-banner2.jpg') }}">
 						</div>
 					</div>
 				</div>

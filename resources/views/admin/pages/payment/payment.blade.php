@@ -36,7 +36,7 @@
             @if($payments->count() > 0)
             @foreach($payments as $payment)
                 <tr>
-                    <td>{{ $payment->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $payment->user->name }}</td>
                     <td>{{ $payment->auctionReference->auction_reference_date }}</td>
                     <td><span class="badge @if($payment->status == 'pending') bg-warning

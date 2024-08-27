@@ -183,26 +183,6 @@
               <hr class="dropdown-divider">
             </li>
 
-            <!-- <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li> -->
-
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -237,19 +217,19 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
+        <a class="nav-link {{ Request::routeIs('users.index') ? '': 'collapsed'}} "" href="{{ route ('users.index') }}">
+          <i class="bi bi-person"></i>
+          <span>Users</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
         <a class="nav-link {{ Request::routeIs('payment.show') ? '': 'collapsed'}} "" href="{{ route ('payment.show') }}">
           <i class="bi bi-card-list"></i>
           <span>Payment</span>
         </a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link {{ Request::routeIs('users.index') ? '': 'collapsed'}} "" href="{{ route ('users.index') }}">
-          <i class="bi bi-person"></i>
-          <span>Users</span>
-        </a>
-      </li>
-      
       <li class="nav-item">
         <a class="nav-link {{ Request::routeIs('category.index') ? '': 'collapsed'}} "" href="{{ route ('category.index') }}">
           <i class="bi bi-card-list"></i>

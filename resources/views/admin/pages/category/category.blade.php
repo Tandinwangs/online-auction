@@ -72,7 +72,7 @@
             @if($categories->count() > 0)
             @foreach($categories as $category)
                 <tr>
-                    <td>{{ $category->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->description }}</td>
                     <td>

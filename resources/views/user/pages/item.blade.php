@@ -10,7 +10,7 @@
             </div>
             <div class="col-md-6 mt-5 mt-md-2 text-center text-md-left">
                 <h4 class="mb-3 mt-0">{{ $item->name }}</h4>
-                <p class="lead mt-2 mb-3 primary-color">Nu. {{ number_format($item->current_bid) }}</p>
+                <p class=" mt-2 mb-3 primary-color">Current Bid: Nu. {{ number_format($item->current_bid) }}</p>
                 <h5 class="mt-4">Description</h5>
                 <p>{{ $item->description }}</p>
 

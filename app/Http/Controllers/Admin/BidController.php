@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use app\Http\Controllers\Controller;
+use App\Models\AuctionReference;
 use App\Models\Bid;
+use App\Models\Item;
 
 class BidController extends Controller
 {
@@ -14,8 +16,10 @@ class BidController extends Controller
     public function index()
     {
         if(checkAdminAccess()) {
+            $refDates = AuctionReference::all();
             $bids = Bid::all();
-            return view('admin.pages.bids.bids', compact('bids'));
+            $items = Item::all();
+            return view('admin.pages.bids.bids', compact('bids', 'items', 'refDates'));
         }
         return redirect("/");
     }
@@ -66,5 +70,11 @@ class BidController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getItemsByrefDate($refDate)
+    {
+        $items = Item::where('auction_reference_id', $refDate)->get();
+        return response()->json(['items' => $items]); 
     }
 }
