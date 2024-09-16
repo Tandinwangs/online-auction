@@ -27,36 +27,6 @@
                Add New Item
             </a>
 
-            <a type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal">
-               Add reference Date
-            </a>
-          </div>
-
-          <div class="modal fade" id="basicModal" tabindex="-1">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Add Reference Date</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="row g-3" method="POST" action="{{ route ('auctionReference.store') }}">
-                            @csrf
-                            <div class="col-12">
-                              <label for="auction_reference_date" class="form-label">Date</label>
-                              <input type="date" class="form-control" id="auction_reference_date" name="auction_reference_date">
-                            </div>
-                            <div class="text-center">
-                              <button type="submit" class="btn btn-primary">Submit</button>
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                          </form>
-            
-                    </div>
-                  
-                  </div>
-                </div>
-              </div>
 
 
           <!-- Table with stripped rows -->
@@ -67,8 +37,8 @@
                       <b>N</b>ame
                     </th>
                     <th>Category</th>
-                    <th>Start</th>
-                    <th>Auction Completion</th>
+                    <th>Status</th>
+                    <th>Current Bid</th>
                     <th>view</th>
                     <th>Action</th>
                   </tr>
@@ -78,8 +48,8 @@
                   <tr>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->category->name }}</td>
-                    <td>{{ $item->auction_start }}</td>
-                    <td>{{ $item->auction_end }}</td>   
+                    <td>{{ $item->status == 1 ? 'Open' : 'Closed' }}</td>   
+                    <td>{{ $item->current_bid }}</td>
                     <td>
                         <a type="button" data-bs-toggle="modal" data-bs-target="#viewItem{{ $item->id }}">
                         <i class="bi bi-eye"></i>
@@ -148,6 +118,7 @@
                                             <div class="modal-body">
                                             <form class="row g-3" action="{{ route ('item.delete', $item->id) }}" method="POST">
                                                 @csrf
+                                                @method('PATCH')
                                                 <div class="col-12">
                                                     <label for="name" class="form-label">Are you sure you want to Delete this Item?</label>
                                                 </div>

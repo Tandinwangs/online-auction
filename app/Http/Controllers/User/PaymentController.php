@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use app\Http\Controllers\Controller;
 use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
+use App\Models\finalPayment;
 
 class PaymentController extends Controller
 {
@@ -102,4 +103,34 @@ class PaymentController extends Controller
     {
         //
     }
+
+    public function finalPayment(Request $request, $item_id){
+        $user = Auth::user();
+        $item = Item::findOrFail($item_id);
+
+        $request->validate([
+            'screenshot' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $screenshotPath = $request->file('screenshot')->store('finalpayment', 'public');
+        $file = $request->file('screenshot');
+        $extention = $file->getClientOriginalExtension();
+
+        $filename = time().'.'.$extention;
+        $path = 'uploads/finalpayment/';
+        $file->move($path, $filename);
+        $screenshotPath = $path.$filename;
+
+        FinalPayment::create([
+            'user_id' => $user->id,
+            'item_id' => $item_id,
+            'screenshot' => $screenshotPath,
+            'status' => 'pending', 
+            ]);
+
+        return redirect()->route('bid.show', ['item' => $item_id])
+        ->with('success', 'Payment submitted successfully. Please wait for the approval.');  
+    
+    }
+
 }

@@ -9,6 +9,8 @@ use App\Models\Bid;
 use App\Models\Item;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
+use App\Events\BidPlaced;
+use App\Models\FinalPayment;
 
 class UserBidController extends Controller
 {
@@ -37,28 +39,42 @@ class UserBidController extends Controller
         $item = Item::findOrFail($request->item_id);
 
         $payment = Payment::where('user_id', $user->id )
+                            ->where('auction_reference_id', $item->auction_reference_id)
+                            ->orderBy('created_at', 'desc')
                             ->first();
-        
+  
         if(!$payment){
-            return redirect()->back()->withErrors(['payment' => 'You must pay Nu. 26,000 to bid on this item.']);
+            return redirect()->back()->withErrors(['error' => 'You must pay Nu. 26,000 to bid on this item.']);
         }else if($payment->status != 'approved'){
             return redirect()->back()->with(['error' => 'Your payment is not yet approved. Please wait for approval before bidding.']);
         }
 
         $minBid = $item->current_bid + $item->reserve_price;
-
+     
         if($request->amount < $minBid) {
+
             return back()->with(['error' => "The bid amount must be at least $minBid."]); 
         }
 
         $data = array_merge($request->validated(), ['bid_time' => now() ]);
 
-        Bid::create($data);
+
+        $bid = Bid::create($data);
 
         $item->current_bid = $request->amount;
         $item->save();
+        
+        $responseData = [
+            'item_id' => $item->id,
+            'highest_bid' => $bid->amount,
+            'bidder' => $user->name, // or any other relevant user info
+        ];
 
-        return redirect()->back()->with('success', "Bidding Added successfully");
+        broadcast(new BidPlaced($item, $bid))->toOthers();
+
+        return $request->ajax()
+            ? response()->json($responseData)
+            : redirect()->back()->with('success', "Bidding added successfully.");
     }
 
     /**
@@ -66,19 +82,34 @@ class UserBidController extends Controller
      */
     public function show(Item $item)
     {
+        $activeBidder = Bid::where('item_id', $item->id)->distinct('user_id')->count();
         $user = Auth::user();
         $hasPaid = Payment::where('user_id', $user->id)
                     ->where('auction_reference_id', $item->auction_reference_id)        
                     ->where('status', 'approved')->exists();
+
+        
+        $finalPayment = finalPayment::where('user_id', $user->id)
+                                ->where('item_id', $item->id)
+                                ->orderBy('created_at', 'desc')
+                                ->first();
 
         $relatedItems = Item::where('category_id', $item->category_id)
                             ->where('id', '!=', $item->id)
                             ->where('auction_reference_id', $item->auction_reference_id)->get();
                             
         $highestBid = Bid::where('item_id', $item->id)->orderBy('amount', 'desc')->first();
-        $myBid = Bid::where('item_id', $item->id)
+        $highestBidder = $item->bids()->orderBy('amount', 'desc')->first();
+        $payable = (0.25*($highestBidder->amount))-25000;
+        if($highestBidder) {
+            $bidUser = $highestBidder->user;
+        } else {
+            $bidUser = '';
+        }
+        if ($user)$myBid = Bid::where('item_id', $item->id)
                         ->where('user_id', $user->id)->orderBy('amount', 'desc')->first();
-        return view('user.pages.item', compact('item', 'hasPaid', 'relatedItems', 'highestBid', 'myBid'));
+        return view('user.pages.item', compact('item', 'hasPaid', 'relatedItems', 'highestBid', 'myBid', 
+                        'user', 'bidUser', 'finalPayment', 'activeBidder', 'payable'));
     }
 
     /**
@@ -104,4 +135,51 @@ class UserBidController extends Controller
     {
         //
     }
+
+    // public function store(StoreBidItemRequest $request)
+    // {
+    //     $user = Auth::user();
+    //     $item = Item::findOrFail($request->item_id);
+
+    //     $payment = Payment::where('user_id', $user->id)
+    //                         ->first();
+        
+    //     if (!$payment) {
+    //         $message = 'You must pay Nu. 26,000 to bid on this item.';
+    //         return $request->ajax()
+    //             ? response()->json(['error' => $message], 422)
+    //             : redirect()->back()->withErrors(['payment' => $message]);
+    //     } else if ($payment->status != 'approved') {
+    //         $message = 'Your payment is not yet approved. Please wait for approval before bidding.';
+    //         return $request->ajax()
+    //             ? response()->json(['error' => $message], 422)
+    //             : redirect()->back()->with(['error' => $message]);
+    //     }
+
+    //     $minBid = $item->current_bid + $item->reserve_price;
+
+    //     if ($request->amount < $minBid) {
+    //         $message = "The bid amount must be at least Nu. $minBid.";
+    //         return $request->ajax()
+    //             ? response()->json(['error' => $message], 422)
+    //             : back()->with(['error' => $message]);
+    //     }
+
+    //     $data = array_merge($request->validated(), ['bid_time' => now()]);
+
+    //     $bid = Bid::create($data);
+
+    //     $item->current_bid = $request->amount;
+    //     $item->save();
+
+    //     $responseData = [
+    //         'success' => "Bidding added successfully.",
+    //         'myBid' => $bid->amount,
+    //         'highestBid' => $item->current_bid,
+    //     ];
+
+    //     return $request->ajax()
+    //         ? response()->json($responseData)
+    //         : redirect()->back()->with('success', "Bidding added successfully.");
+    // }
 }

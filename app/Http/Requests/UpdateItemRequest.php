@@ -30,8 +30,9 @@ class UpdateItemRequest extends FormRequest
             'category_id' => 'sometimes|required|exists:categories,id',
             'auction_reference_id' => 'required|exists:auction_references,id',
             'user_id' => 'sometimes|required|exists:users,id',
-            'auction_start' => 'sometimes|required|date',
-            'auction_end' => 'sometimes|required|date|after:auction_start',
+            'status' => 'boolean',
+            // 'auction_start' => 'sometimes|required|date',
+            // 'auction_end' => 'sometimes|required|date|after:auction_start',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
     }

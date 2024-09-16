@@ -190,7 +190,7 @@
                         <th scope="col">Name</th>
                         <th scope="col">Category</th>
                         <th scope="col">Starting Price</th>
-                        <th scope="col">Auction Start</th>
+                        <th scope="col">status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -200,7 +200,13 @@
                         <td>{{ $recentItem->name }}</td>
                         <td><a href="#" class="text-primary">{{ $recentItem->category->name }}</a></td>
                         <td>{{ $recentItem->starting_bid }}</td>
-                        <td><span class="badge bg-success">{{ $recentItem->auction_start }}</span></td>
+                        <td>
+                            @php
+                                $statusClass = $recentItem->status == 1 ? 'bg-success' : 'bg-danger';
+                                $statusText = $recentItem->status == 1 ? 'Open' : 'Closed';
+                            @endphp
+                            <span class="badge {{ $statusClass }}">{{ $statusText }}</span>
+                        </td>
                       </tr>
                       @endforeach
                     </tbody>

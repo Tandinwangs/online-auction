@@ -30,8 +30,9 @@ class StoreItemRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'auction_reference_id' => 'required|exists:auction_references,id',
             'user_id' => 'required|exists:users,id',
-            'auction_start' => 'required|date|after_or_equal:today',
-            'auction_end' => 'required|date|after:auction_start',
+            'status' => 'boolean',
+            // 'auction_start' => 'required|date|after_or_equal:today',
+            // 'auction_end' => 'required|date|after:auction_start',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
     }

@@ -18,8 +18,7 @@ class Item extends Model
         'category_id',
         'auction_reference_id',
         'user_id',
-        'auction_start',
-        'auction_end',
+        'status',
         'image_path',
     ];
 

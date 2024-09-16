@@ -75,12 +75,12 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
+   <!-- <div class="search-bar">
       <form class="search-form d-flex align-items-center" method="POST" action="#">
         <input type="text" name="query" placeholder="Search" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
-    </div><!-- End Search Bar -->
+    </div> End Search Bar -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
@@ -217,23 +217,40 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link {{ Request::routeIs('users.index') ? '': 'collapsed'}} "" href="{{ route ('users.index') }}">
-          <i class="bi bi-person"></i>
-          <span>Users</span>
+        <a class="nav-link {{ Request::routeIs('users.index')|| Request::routeIs('adminusers.show') ? '': 'collapsed'}} """ data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-person"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link {{ Request::routeIs('users.index') ? '': 'collapsed'}} "" href="{{ route ('users.index') }}">
+            <i class="bi bi-person"></i>
+            <span>Users</span>
+          </a>
+        </li>
+
+          <li>
+            <a class="nav-link {{ Request::routeIs('adminusers.show') ? '': 'collapsed'}} "" href="{{ route ('adminusers.show') }}">
+              <i class="bi bi-person"></i>
+              <span>Admin-Users</span>
+            </a>
+          </li>
+        
+        </ul>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link {{ Request::routeIs('payment.show') ? '': 'collapsed'}} "" href="{{ route ('payment.show') }}">
-          <i class="bi bi-card-list"></i>
-          <span>Payment</span>
-        </a>
-      </li>
+     
 
       <li class="nav-item">
         <a class="nav-link {{ Request::routeIs('category.index') ? '': 'collapsed'}} "" href="{{ route ('category.index') }}">
           <i class="bi bi-card-list"></i>
           <span>Category</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link {{ Request::routeIs('refdate.index') ? '': 'collapsed'}} "" href="{{ route ('refdate.index') }}">
+          <i class="bi bi-calendar"></i>
+          <span>Ref-Date</span>
         </a>
       </li>
 
@@ -250,6 +267,35 @@
           <i class="bi bi-hammer"></i>
           <span>Bids</span>
         </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link {{ Request::routeIs('payment.show')|| Request::routeIs('finalpayment.show') || Request::routeIs('repayment.show') ? '': 'collapsed'}} """ data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-card-list"></i><span>Payments</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+          <a class="nav-link {{ Request::routeIs('payment.show') ? '': 'collapsed'}} "" href="{{ route ('payment.show') }}">
+            <i class="bi bi-card-list"></i>
+              <span>Payment</span>
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-link {{ Request::routeIs('finalpayment.show') ? '': 'collapsed'}} "" href="{{ route ('finalpayment.show') }}">
+              <i class="bi bi-card-list"></i>
+              <span>Final-Payment</span>
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-link {{ Request::routeIs('repayment.show') ? '': 'collapsed'}} "" href="{{ route ('repayment.show') }}">
+              <i class="bi bi-card-list"></i>
+              <span>Re-Payment</span>
+            </a>
+          </li>
+        
+        </ul>
       </li>
 
     </ul>

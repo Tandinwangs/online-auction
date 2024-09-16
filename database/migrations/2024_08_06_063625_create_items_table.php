@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('auction_start')->nullable();
             $table->timestamp('auction_end')->nullable();
-            $table->string('image_path')->nullable();
+            $table->string('image_path')->nullable(); 
             $table->timestamps();
         });
     }

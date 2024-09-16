@@ -13,7 +13,8 @@ class AuctionReferenceController extends Controller
      */
     public function index()
     {
-        //
+        $auctionReferences = AuctionReference::all();
+        return view('admin.pages.refdate.refdate', compact('auctionReferences'));
     }
 
     /**
@@ -60,16 +61,29 @@ class AuctionReferenceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AuctionReference $auctionReference)
+    public function update(Request $request, $id)
     {
-        //
+        $validatedDate = $request->validate([
+            'auction_reference_date' => 'required|date'
+        ]);
+
+        $auctionReference = AuctionReference::findOrFail($id);
+
+        $auctionReference->update($validatedDate);
+
+        return redirect()->back()->with('success', 'Auction reference date updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AuctionReference $auctionReference)
+    public function destroy(string $id)
     {
-        //
+        $refDate = AuctionReference::findOrFail($id);
+       
+        $refDate->delete();
+
+        return redirect()->back()->with('success', 'Auction reference date deleted successfully');
+
     }
 }

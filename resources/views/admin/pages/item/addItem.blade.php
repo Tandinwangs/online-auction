@@ -1,5 +1,21 @@
 @include('admin.partials.navbar')
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#statusSwitch').change(function () {
+                if (!$(this).is(':checked')) {
+                    // If checkbox is being unchecked, show confirmation dialog
+                    var confirmed = confirm("Are you sure you want to close the item? This action cannot be undone.");
+                    if (!confirmed) {
+                        // Revert checkbox to checked state if user cancels
+                        $(this).prop('checked', true);
+                    }
+                }
+            });
+        });
+  </script>
+
 <main id="main" class="main">
 
 <div class="pagetitle">
@@ -43,7 +59,7 @@
             </div>
             <div class="col-md-6">
                 <select id="inputState" class="form-select" name="category_id">
-                    <option value="">Choose...</option>
+                    <option value="">Category...</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" {{ isset($item) && $item->category_id == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
@@ -58,7 +74,7 @@
             
             <div class="col-md-6">
                 <select id="inputState" class="form-select" name="auction_reference_id">
-                    <option value="">Choose...</option>
+                    <option value="">Reserve Date...</option>
                     @foreach ($auctionRefDates as $auctionRefDate)
                         <option value="{{ $auctionRefDate->id }}" {{ isset($item) && $item->auction_reference_id == $auctionRefDate->id ? 'selected' : '' }}>
                           {{ \Carbon\Carbon::parse($auctionRefDate->auction_reference_date)->format('jS F, Y') }} 
@@ -90,22 +106,6 @@
             </div>
 
             <div class="col-6">
-            <label>Auction Start</label>
-              <input type="date" class="form-control" name="auction_start" value="{{ old('auction_start', isset($item) ? $item->auction_start : '') }}" placeholder="Auction Start">
-              @error('auction_start')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
-            </div>
-
-            <div class="col-6">
-            <label>Auction End</label>
-              <input type="date" class="form-control" name="auction_end" placeholder="Auction end" value="{{ old('auction_end', isset($item) ? $item->auction_end : '') }}">
-              @error('auction_end')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
-            </div>
-            
-            <div class="col-6">
                 <input type="file" class="form-control" name="image">
                 @if(isset($item) && $item->image_path)
             <img src="{{ asset($item->image_path) }}" alt="{{ $item->name }}" width="100">
@@ -115,6 +115,22 @@
                 @enderror
               </div>
        
+
+            <div class="col-md-6">
+              <div class="form-group">
+                  <label>Status</label>
+                  <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="statusSwitch" name="status" value="1" 
+                            {{ old('status', isset($item) && $item->status == 1 ? 'checked' : '') }}>
+                      <label class="form-check-label" for="statusSwitch">
+                          {{ old('status', isset($item) && $item->status == 1 ? 'Open for Auction' : 'Closed') }}
+                      </label>
+                  </div>
+                  @error('status')
+                      <small class="text-danger">{{ $message }}</small>
+                  @enderror
+              </div>
+          </div>
 
             <div class="col-md-6">
                 <textarea placeholder="Desc" class="form-control" id="floatingTextarea" style="height: 100px;" name="description">{{ old('description', $item->description ?? '') }}</textarea>

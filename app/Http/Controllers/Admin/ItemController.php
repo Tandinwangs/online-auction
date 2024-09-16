@@ -9,6 +9,8 @@ use App\Http\Requests\UpdateItemRequest;
 use App\Models\AuctionReference;
 use App\Models\Category;
 use App\Models\Item;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AuctionStatusUpdateMail;
 
 class ItemController extends Controller
 {
@@ -52,9 +54,12 @@ class ItemController extends Controller
         $path = 'uploads/item/';
         $file->move($path, $filename);
         $validated['image_path'] = $path.$filename;
-        $validated['current_bid'] = $request->starting_bid;
         // $validated['image_path'] = $request->file('image')->store('images', 'public');
     }
+
+    $validated['current_bid'] = $request->starting_bid;
+
+    $validated['status'] = $request->has('status') ? 1 : 0;
 
     Item::create($validated);
 
@@ -85,21 +90,47 @@ class ItemController extends Controller
     public function update(UpdateItemRequest $request, Item $item)
     {
         $validated = $request->validated();
-
+    
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $extention = $file->getClientOriginalExtension();
-    
-            $filename = time().'.'.$extention;
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
             $path = 'uploads/item/';
             $file->move($path, $filename);
-            $validated['image_path'] = $path.$filename;
-            // $validated['image_path'] = $request->file('image')->store('images', 'public');
+            $validated['image_path'] = $path . $filename;
         }
     
-        $item->update($validated);
-        return redirect()->route('item.index')->with('success', 'Item updated successfully!');
+        // Ensure status is set to 0 if it's not present in the request
+        $validated['status'] = $request->has('status') ? 1 : 0;
+    
+        // Check if the status is set to '0' (closed)
+        if ($validated['status'] == 0) {
+            $item->update($validated); // Update item details including status
+    
+            // Fetch the highest bid for the item
+            $highestBid = $item->bids()->where('status', 'bidding stage')->orderBy('amount', 'desc')->first();
+    
+            if ($highestBid) {
+                // Update highest bid status to 'wins in Bidding'
+                $highestBid->update(['status' => 'wins in Bidding']);
+    
+                // Send email to the user who placed the highest bid
+                $user = $highestBid->user;
+                Mail::to($user->email)->send(new AuctionStatusUpdateMail($user, $item));
+    
+                // Update other bids' status to 'loose in Bidding'
+                $item->bids()->where('id', '!=', $highestBid->id)->update(['status' => 'loose in Bidding']);
+            }
+    
+            return redirect()->route('item.index')->with('success', 'Item updated and auction closed successfully!');
+        } else {
+            // Update item details without changing bid statuses if status is not '0'
+            $item->update($validated);
+    
+            return redirect()->route('item.index')->with('success', 'Item updated successfully!');
+        }
     }
+    
 
     /**
      * Remove the specified resource from storage.

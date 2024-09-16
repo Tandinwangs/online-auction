@@ -13,7 +13,8 @@ class Payment extends Model
         'user_id',
         'auction_reference_id',
         'status',
-        'screenshot'
+        'screenshot',
+        'refund_status'
     ];
 
     public function user() {
@@ -23,7 +24,6 @@ class Payment extends Model
     public function auctionReference()
     {
         return $this->belongsTo(AuctionReference::class);
-    }
-    
+    }  
 
 }

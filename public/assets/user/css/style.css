@@ -85,8 +85,8 @@ p {
 .pill-btn {
   border-radius: 499rem !important; }
 
-.btn-full-width {
-  width: 100%; }
+/* .btn-full-width {
+  width: 0%; } */
 
 .justify-center {
   display: flex;
@@ -517,7 +517,8 @@ li.nav-item .active {
 
 .product-image {
   border: 1px solid #dfe1e5;
-  width: 100%; }
+  width: 100%; 
+}
 
 .product-thumbnails img {
   border: 1px solid #dfe1e5;
@@ -679,3 +680,41 @@ input.quantity {
     padding: 0;
     display: flex;
     justify-content: center; } }
+
+.auction-timer p {
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+.auction-timer .status-open {
+      color: green;
+    }
+
+.auction-timer .status-closed {
+      color: red;
+    }
+
+.congratulations-container {
+      background-color: #f4fdf4;
+      border: 1px solid #d4edda;
+      margin-top: -100px;
+      margin: auto;
+  }
+  
+  .congratulations-container .icon {
+      display: flex;
+      justify-content: center;
+  }
+  
+  .congratulations-container h4 {
+      font-weight: bold;
+  }
+  
+  .congratulations-container .form-control-file {
+      border: 1px solid #ced4da;
+      border-radius: .25rem;
+  }
+  
+  .congratulations-container button {
+      margin-top: 5px;
+  }

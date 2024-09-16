@@ -25,7 +25,7 @@
           <div class="float-righ">     
             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal">
                Add New Category
-              </button>
+            </button>
               <div class="modal fade" id="basicModal" tabindex="-1">
                 <div class="modal-dialog">
                   <div class="modal-content">

@@ -85,9 +85,22 @@
                                      @error('password_confirmation')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
-                                    </div>
-								<br />
-							</div>
+                                </div>
+
+                                <div class="col-md-8">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="terms_and_conditions" id="terms_and_conditions" required>
+                                            <label class="form-check-label" for="terms_and_conditions">
+                                                I agree to the   
+                                    <a href="">Terms and Conditions</a>
+                                            </label>
+                                        </div>
+                                        @error('terms_and_conditions')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                         </div>
+								    <br />
+							    </div>
 							<div class="row">
 								<div class="col-md-2">
 									<button type="submit" class="btn btn-outline-primary btn-lg mb-4">Register</button>

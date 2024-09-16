@@ -19,14 +19,25 @@ class UsersSeeder extends Seeder
          $adminRole = Role::where('name', 'admin')->first();
          $userRole = Role::where('name', 'user')->first();
 
-          // Create admin user
-        $admin = User::create([
-            'name' => 'Tandin Wangchuk',
-            'email' => 'wangchuktandin@bnb.bt',
-            'cid' => '11510000467',
-            'password' => Hash::make('T@ndin123')
-        ]);
+         $users = [
+            [
+                'name' => 'Tandin Wangchuk',
+                'email' => 'wangchuktandin@bnb.bt',
+                'cid' => '11510000467',
+                'password' => Hash::make('T@ndin123'),
+            ],
+            [
+                'name' => 'Dechhen Pema',
+                'email' => 'dechhenp@bnb.bt',
+                'cid' => '',
+                'password' => Hash::make('Bnbl@2024'),
+            ],
+        ];
 
-        $admin->assignRole($adminRole);
+        // Loop through each user, create them, and assign the admin role
+        foreach ($users as $userData) {
+            $user = User::create($userData);
+            $user->assignRole($adminRole);
+        }
     }
 }
