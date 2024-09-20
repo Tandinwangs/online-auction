@@ -74,8 +74,8 @@ class BidController extends Controller
 
     public function getItemsByrefDate($refDate)
     {
-        $refID = AuctionReference::where('auction_reference_date', $refDate)->value('id');
-        $items = Item::where('auction_reference_id', $refID)->get();
-        // return response()->json(['items' => $items]); 
+        // $refID = AuctionReference::where('auction_reference_date', $refDate)->value('id');
+        $items = Item::where('auction_reference_id', $refDate)->get();
+            return response()->json(['items' => $items]); 
     }
 }

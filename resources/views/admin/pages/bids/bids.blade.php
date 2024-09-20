@@ -177,7 +177,7 @@
 
         itemDropdown.innerHTML = '';
 
-        fetch('/items/' + refDateId)
+        fetch('/getitems/' + refDateId)
             .then(function(response) {
                 if(!response.ok) {
                     throw new Error('Network response was not ok');
@@ -186,6 +186,7 @@
             })
             .then(function(data) {
                 var items = data.items;
+                console.log(items);
 
                 var defaultOption = document.createElement('option');
                 defaultOption.value = item.id;

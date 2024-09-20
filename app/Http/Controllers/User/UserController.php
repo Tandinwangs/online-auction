@@ -16,12 +16,12 @@ class UserController extends Controller
     {
         if ($auction_reference_date) {
             // Fetch items based on the auction_reference_date
-            $items = Item::whereHas('auctionReference', function ($query) use ($auction_reference_date) {
+            $items = Item::with('images')->whereHas('auctionReference', function ($query) use ($auction_reference_date) {
                 $query->where('auction_reference_date', $auction_reference_date);
             })->get();
         } else {
             // If no reference date is provided, you can fetch all items or return a default view
-            $items = Item::all();
+            $items = Item::with('images')->get();
         }
         
         // Fetch recent references for the dropdown

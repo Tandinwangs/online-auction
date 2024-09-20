@@ -9,7 +9,7 @@
 			<div class="container">
 				<div class="row contact-details">
 					<div class="col-sm-8 text-center text-md-left">
-						<h3 class="mb-4">Register</h3>
+						<h3 class="mb-4">Registration</h3>
 						<!-- <p class="mb-4">Pay Nu.300 as a entry fee to participate bidding.</p> -->
 						<form class="contact-form mt-4" method="POST" action="{{ route('register') }}">
                             @csrf
@@ -88,17 +88,21 @@
                                 </div>
 
                                 <div class="col-md-8">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="terms_and_conditions" id="terms_and_conditions" required>
-                                            <label class="form-check-label" for="terms_and_conditions">
-                                                I agree to the   
-                                    <a href="">Terms and Conditions</a>
-                                            </label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="terms_and_conditions" id="terms_and_conditions" required>
+                                        <label class="form-check-label" for="terms_and_conditions">
+                                            I agree to the <a href="#termsConditions"  data-bs-toggle="collapse" aria-expanded="false" aria-controls="termsConditions">Terms and Conditions</a>
+                                        </label>
+                                    </div>
+                                    <!-- Collapse area -->
+                                        <div class="collapse mt-3" id="termsConditions">
+                                            @include('components.terms-conditions')
                                         </div>
+
                                         @error('terms_and_conditions')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
-                                         </div>
+                                </div>
 								    <br />
 							    </div>
 							<div class="row">

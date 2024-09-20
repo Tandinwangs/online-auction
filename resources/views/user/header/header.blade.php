@@ -26,10 +26,8 @@
 									@foreach($recentReferences as $reference)
 									<a class="dropdown-item" href="{{ route('items.index', ['auction_reference_date' => $reference->auction_reference_date]) }}">{{ $reference->auction_reference_date }}</a>
 									@endforeach
-									<div class="dropdown-divider"></div>
+									
 							</li>
-							<li class="nav-item"><a class="nav-link" href="">Contact</a></li>
-							
                             @if(Auth::user())
 							<!-- @if(Auth::user()->hasRole('admin'))
 								<p>Welcome, Admin!</p>
@@ -42,6 +40,7 @@
 							</li>
                             @else
                             <li class="nav-item"><a class="nav-link"   href="{{ route('login') }}">Sign In</a></li>
+							<li class="nav-item"><a class="nav-link"   href="{{ route('register') }}">Sign Up</a></li>
                             @endif
 						</ul>
 					</div>

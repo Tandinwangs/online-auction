@@ -63,7 +63,7 @@ Route::group(['namespace' => 'Item', 'middleware' => 'auth'],function() {
     Route::get('/payments', [AdminPaymentController::class, 'index'])->name('payment.show');
     Route::get('/finalPayments', [AdminPaymentController::class, 'finalPayView'])->name('finalpayment.show');
     Route::get('/bids', [BidController::class, 'index'])->name('bid.index');
-    // Route::get('/items/{refDate}', [BidController::class, 'getItemsByrefDate'])->name('items.getItemsByrefDate');
+    Route::get('/getitems/{refDate}', [BidController::class, 'getItemsByrefDate'])->name('items.getItemsByrefDate');
     Route::get('/rePayment', [AdminPaymentController::class, 'rePayView'])->name('repayment.show');
     // Route::patch('/repayment/{id}', [PaymentController::class, 'rePayment'])->name('payments.update');
     Route::patch('/repayments/{id}/update-refund-status', [AdminPaymentController::class, 'updateRefundStatus'])->name('update-refund-status');

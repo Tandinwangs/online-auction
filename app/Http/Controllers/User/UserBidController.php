@@ -82,35 +82,42 @@ class UserBidController extends Controller
      */
     public function show(Item $item)
     {
+        // Load the related images for the item (using eager loading to improve performance)
+        $item->load('images'); // Assuming the relationship is defined in the Item model
+        
         $activeBidder = Bid::where('item_id', $item->id)->distinct('user_id')->count();
         $user = Auth::user();
         $hasPaid = Payment::where('user_id', $user->id)
                     ->where('auction_reference_id', $item->auction_reference_id)        
                     ->where('status', 'approved')->exists();
-
-        
-        $finalPayment = finalPayment::where('user_id', $user->id)
+    
+        $finalPayment = FinalPayment::where('user_id', $user->id)
                                 ->where('item_id', $item->id)
                                 ->orderBy('created_at', 'desc')
                                 ->first();
-
-        $relatedItems = Item::where('category_id', $item->category_id)
+    
+        $relatedItems = Item::with('images')
+                            ->where('category_id', $item->category_id)
                             ->where('id', '!=', $item->id)
-                            ->where('auction_reference_id', $item->auction_reference_id)->get();
-                            
+                            ->where('auction_reference_id', $item->auction_reference_id)
+                            ->get();
+    
         $highestBid = Bid::where('item_id', $item->id)->orderBy('amount', 'desc')->first();
         $highestBidder = $item->bids()->orderBy('amount', 'desc')->first();
-        $payable = (0.25*($highestBidder->amount))-25000;
-        if($highestBidder) {
-            $bidUser = $highestBidder->user;
-        } else {
-            $bidUser = '';
-        }
-        if ($user)$myBid = Bid::where('item_id', $item->id)
-                        ->where('user_id', $user->id)->orderBy('amount', 'desc')->first();
+        
+        $payable = $highestBidder ? (0.25 * $highestBidder->amount) - 25000 : 0;
+        
+        $bidUser = $highestBidder ? $highestBidder->user : '';
+        
+        $myBid = $user ? Bid::where('item_id', $item->id)
+                        ->where('user_id', $user->id)
+                        ->orderBy('amount', 'desc')
+                        ->first() : null;
+    
         return view('user.pages.item', compact('item', 'hasPaid', 'relatedItems', 'highestBid', 'myBid', 
                         'user', 'bidUser', 'finalPayment', 'activeBidder', 'payable'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.

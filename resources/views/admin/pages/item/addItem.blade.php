@@ -105,15 +105,27 @@
                 @enderror
             </div>
 
-            <div class="col-6">
-                <input type="file" class="form-control" name="image">
-                @if(isset($item) && $item->image_path)
-            <img src="{{ asset($item->image_path) }}" alt="{{ $item->name }}" width="100">
-        @endif
-                @error('image')
+            <div class="col-md-6">
+                <label for="images">Upload Images</label>
+                <input type="file" class="form-control" name="images[]" multiple>
+                @error('images')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
-              </div>
+            </div>
+
+            <!-- Display previously uploaded images (if editing) -->
+            @if(isset($item) && $item->images->count())
+                <div class="form-group">
+                    <label>Current Images</label>
+                    <div class="row">
+                        @foreach($item->images as $image)
+                            <div class="col-3">
+                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Item Image" class="img-thumbnail" width="100">
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
        
 
             <div class="col-md-6">

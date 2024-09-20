@@ -1,6 +1,5 @@
 <footer class="footer">
 	
-			
     <div class="container-fluid">
         <div class="divider"></div>
     </div>
@@ -20,6 +19,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<style>
+    #toast-container {
+        top: 10px !important; /* Adjust this value as needed */
+        left: 50% !important;
+        transform: translateX(-50%) !important; /* Remove vertical centering */
+        position: fixed !important;
+    }
+</style>
+
 
 @if (Session::has('success'))
     <script>

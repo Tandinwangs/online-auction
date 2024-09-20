@@ -101,7 +101,7 @@
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $bid->user->cid }}</td>
                 <td>{{ $bid->rank }}</td>
-                <td>{{ $bid->highest_bid }}</td>
+                <td>{{ number_format($bid->highest_bid) }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -113,7 +113,7 @@
             <p>Name of the Highest Bidder: {{ $highestBidder->user->name }}</p>
             <p>Signature:</p>
             <p>Cid No: {{ $highestBidder->user->cid }}</p>
-            <p>Phone No: {{ $highestBidder->user->phone_numer }}</p>
+            <p>Phone No: {{ $highestBidder->user->phone_number }}</p>
         </div>
         <div class="signature-right">
             <p>Signature of auction committee:</p>

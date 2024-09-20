@@ -11,6 +11,8 @@ use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AuctionStatusUpdateMail;
+use App\Models\ItemImage;
+use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
 {
@@ -39,32 +41,56 @@ class ItemController extends Controller
         return redirect("/");
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreItemRequest $request)
-    {
-        $validated = $request->validated();
-      
-    if ($request->hasFile('image')) {
-        $file = $request->file('image');
-        $extention = $file->getClientOriginalExtension();
 
-        $filename = time().'.'.$extention;
-        $path = 'uploads/item/';
-        $file->move($path, $filename);
-        $validated['image_path'] = $path.$filename;
-        // $validated['image_path'] = $request->file('image')->store('images', 'public');
+    public function store(Request $request)
+{
+    // Validate the input directly in the store method
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'required|string',
+        'starting_bid' => 'required|numeric|min:0',
+        'current_bid' => 'nullable|numeric|min:0',
+        'reserve_price' => 'required|numeric|min:0',
+        'category_id' => 'required|exists:categories,id',
+        'auction_reference_id' => 'required|exists:auction_references,id',
+        'user_id' => 'required|exists:users,id',
+        'status' => 'boolean',
+        'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // Validate multiple images
+    ]);
+
+    // Create the item
+    $item = Item::create([
+        'name' => $validated['name'],
+        'description' => $validated['description'],
+        'starting_bid' => $validated['starting_bid'],
+        'current_bid' => $request->starting_bid,
+        'reserve_price' => $validated['reserve_price'],
+        'category_id' => $validated['category_id'],
+        'auction_reference_id' => $validated['auction_reference_id'],
+        'user_id' => $validated['user_id'],
+        'status' => $request->has('status') ? 1 : 0,
+    ]);
+
+    // Handle multiple image uploads
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $file) {
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '-' . uniqid() . '.' . $extension;
+            $path = 'uploads/item/';
+            $file->move($path, $filename);
+
+            // Save image paths in the item_images table
+            ItemImage::create([
+                'item_id' => $item->id,
+                'image_path' => $path . $filename,
+            ]);
+        }
     }
 
-    $validated['current_bid'] = $request->starting_bid;
+    return redirect()->back()->with('success', 'Item created successfully!');
+}
 
-    $validated['status'] = $request->has('status') ? 1 : 0;
-
-    Item::create($validated);
-
-        return redirect()->back()->with('success', 'Item created successfully!');
-    }
+    
 
     /**
      * Display the specified resource.

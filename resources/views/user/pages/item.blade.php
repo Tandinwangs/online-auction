@@ -20,8 +20,24 @@
         <div class="row">
             <div class="col-md-6 text-center">
                 <div class="product-image mt-3">
-                    <img class="img-fluid" src="{{ asset($item->image_path) }}" alt="{{ $item->name }}">
+                    <!-- Display the main image (first image or a fallback if none available) -->
+                    @if($item->images->first())
+                        <img id="mainImage" class="img-fluid" src="{{ asset($item->images->first()->image_path) }}" alt="{{ $item->name }}">
+                    @else
+                        <!-- Fallback image if no images are found -->
+                        <img id="mainImage" class="img-fluid" src="path/to/default-image.jpg" alt="{{ $item->name }}">
+                    @endif
                 </div>
+
+                <div class="product-thumbnails">
+                    <!-- Loop through the item images and display thumbnails -->
+                    @foreach($item->images as $image)
+                        <a href="#" class="thumbnail">
+                            <img class="mt-2 mr-2 img-fluid" src="{{ asset($image->image_path) }}" alt="{{ $item->name }}" data-large-src="{{ asset($image->image_path) }}">
+                        </a>
+                    @endforeach
+                </div>
+
             </div>
             <div class="col-md-6 mt-5 mt-md-2 text-center text-md-left">
 
@@ -76,6 +92,11 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                             <button type="submit" class="btn btn-full-width btn-lg btn-outline-primary">Place Bid</button>
+                            <!-- @if(session('success'))
+                            <div id="success-message" class="alert alert-success" style="margin-top: 10px">
+                                {{ session('success') }}
+                            </div>
+                        @endif -->
                         </form>
                     @else
                     <form action="{{ route('payment.store', ['item_id' => $item->id]) }}" method="POST" enctype="multipart/form-data">
@@ -109,7 +130,11 @@
 							@foreach ($relatedItems as $ritem)
                                 <div class="col-sm-6 col-md-3 col-product">
                                         <figure>
-                                            <img class="rounded-corners img-fluid" src="{{ asset($ritem->image_path) }}" style="height: 100px; width:140px">
+                                        @if($ritem->images->first())
+                                            <img  class="rounded-corners img-fluid" src="{{ asset($item->images->first()->image_path) }}" alt="{{ $ritem->name }}"  style="height: 100px; width:140px">
+                                        @else
+                                            <img  class="rounded-corners img-fluid" alt="{{ $ritem->name }}" width="100">
+                                        @endif
                                         </figure>
                                         <h5>{{ $ritem->name }}</h5>
                                         <p><span class="emphasis">Nu.{{ $ritem->current_bid }}</span></p>
@@ -140,10 +165,16 @@
 							<!-- Repeat for each bid -->
 							<div class="col-12 col-product">
 								<figure>
-									<img class="rounded-corners img-fluid" src="{{ asset($item->image_path) }}" width="240" height="240">
+                                @if($item->images->first())
+                                    <img class="rounded-corners img-fluid" src="{{ asset($item->images->first()->image_path) }}" alt="{{ $item->name }}"  width="240" height="240">
+                                @else
+                                    <!-- Fallback image if no images are found -->
+                                    <img class="img-fluid" src="path/to/default-image.jpg" alt="{{ $item->name }}">
+                                @endif
+									
 								</figure>
 								<h4>{{ $item->name }}</h4>
-                                <a id="toggleBidInfo" ><i class="fas fa-eye"></i></a>
+                                <a id="toggleBidInfo" style="cursor: pointer"><i class="fas fa-eye"></i></a>
                                 <div id="bidInfo">
                                     <div class="row mt-3">
                                         <!-- My Bid Section -->
@@ -248,6 +279,21 @@
     });
 </script> -->
 
+
+<script>
+    // Add event listeners to all thumbnail links
+    document.querySelectorAll('.thumbnail').forEach(function(thumbnail) {
+        thumbnail.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+
+            // Get the large image source from the data-large-src attribute
+            var largeImageSrc = this.querySelector('img').getAttribute('data-large-src');
+
+            // Update the main image's src attribute
+            document.getElementById('mainImage').setAttribute('src', largeImageSrc);
+        });
+    });
+</script>
 
 <div class="divider"></div>
 @include('user.footer.footer')

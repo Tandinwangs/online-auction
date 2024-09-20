@@ -64,7 +64,8 @@
 				@foreach ($items as $item)	
 					<div class="col-sm-6 col-md-3 col-product">
 						<figure>
-							<img class="rounded-corners img-fluid" src="{{ asset($item->image_path) }}" style="width: 240px; height: 180px">
+						@if($item->images->first())
+							<img class="rounded-corners img-fluid" src="{{ asset($item->images->first()->image_path) }}" style="width: 240px; height: 180px">
 							<!-- <figcaption>
 								<div class="thumb-overlay">
 									<a href="{{ route ('bid.show', $item->id) }}" title="More Info">
@@ -72,6 +73,10 @@
 									</a>
 								</div>
 							</figcaption> -->
+							@else
+                <!-- Fallback image if no images are found -->
+                	<img class="rounded-corners img-fluid" src="path/to/default-image.jpg" alt="{{ $item->name }}" width="100">
+            	@endif
 						</figure>
 						<h4>{{ $item->name }}</h4>
 						<p><span class="emphasis">Nu.{{ number_format($item->current_bid) }}</span></p>
